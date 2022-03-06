@@ -16,3 +16,11 @@
 - Router.tsx
   - Router 안에 Routes(~v5 Switch), Routes 안에 Route
 - 로그인 여부(isLoggedIn)에 따라 현재는 Home이나 Auth component 보여줌
+
+## Authentication
+
+- fbase.js에 getAuth() 함수로 authService를 export 함
+- App.tsx에서 로그인 여부 state 초기값으로 authService.currentUser를 줌
+- Firebase console에서 Authentication의 Sign-in method에서 로그인 제공 업체 추가
+  - GitHub은 OAuth를 추가해줘야함
+- Auth.tsx에 로그인 폼 추가
