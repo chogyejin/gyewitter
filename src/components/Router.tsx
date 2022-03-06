@@ -1,10 +1,10 @@
+import { User } from "firebase/auth";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
-import Profile from "../routes/Profile";
 
 interface AppRouterProps {
-  isLoggedIn: boolean;
+  isLoggedIn: User | null;
 }
 
 const AppRouter = ({ isLoggedIn }: AppRouterProps) => {
