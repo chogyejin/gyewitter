@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -26,7 +26,7 @@ const Auth = () => {
       <form onSubmit={onSubmit}>
         <input
           name="email"
-          type="text"
+          type="email"
           placeholder="이메일"
           required
           value={email}
