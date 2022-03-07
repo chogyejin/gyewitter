@@ -24,3 +24,9 @@
 - Firebase console에서 Authentication의 Sign-in method에서 로그인 제공 업체 추가
   - GitHub은 OAuth를 추가해줘야함
 - Auth.tsx에 로그인 폼 추가
+- 로그인 기능 추가 : createUserWithEmailAndPassword(), signInWithEmailAndPassword()
+  - 어플리케이션이 시작되면 Firebase가 초기화될 시간이 없어 user가 null로 나옴
+  - App.tsx에 signed-in한 사용자를 관찰하는 onAuthStateChanged()를 useEffect로 추가
+  - 정보는 개발자도구 > Application > IndexedDB에 저장됨(기본값)
+- 가입한 user는 Firebase console의 Users 탭에서 확인 가능
+- 새 계정 가입 or 로그인 버튼 바꾸는 토글 추가
