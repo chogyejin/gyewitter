@@ -1,7 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { authService } from "../fbase";
 
@@ -24,7 +27,7 @@ const Auth = () => {
     }
   };
 
-  const onSubmit = async (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       let data;
@@ -46,6 +49,24 @@ const Auth = () => {
 
   const toggleAccount = () => {
     setIsNewAccount((prev) => !prev);
+  };
+
+  const onSocialClick = async (event: React.MouseEvent) => {
+    const name = (event.target as HTMLButtonElement).name;
+
+    let provider;
+    try {
+      if (name === "google") {
+        provider = new GoogleAuthProvider();
+      } else if (name === "github") {
+        provider = new GithubAuthProvider();
+      }
+
+      if (provider === undefined) return;
+      const result = await signInWithPopup(authService, provider);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -77,8 +98,12 @@ const Auth = () => {
         {isNewAccount ? "로그인 버튼으로" : "새 계정 만들기 버튼으로"}
       </div>
       <div>
-        <button>Google로 계속 하기</button>
-        <button>GitHub로 계속 하기</button>
+        <button name="google" onClick={onSocialClick}>
+          Google로 계속 하기
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          GitHub로 계속 하기
+        </button>
       </div>
     </div>
   );
