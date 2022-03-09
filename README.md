@@ -55,3 +55,11 @@
     // Router.tsx NOT isLoggedIn
     <Route path="*" element={<Navigate to="/" replace />} />
     ```
+
+## Tweet(gyeweet)
+
+- 트윗 form 작성
+- Firestore Database(NoSQL) test mode로 생성
+  - Document : 문서
+  - Collection : 폴더, Document의 모임
+- addDoc() 함수로 특정 collection에 document 추가할 수 있음
