@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -14,7 +14,7 @@ const Auth = () => {
   const [isNewAccount, setIsNewAccount] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
     } = event;
@@ -27,7 +27,7 @@ const Auth = () => {
     }
   };
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       let data;
