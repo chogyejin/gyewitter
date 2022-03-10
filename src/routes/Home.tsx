@@ -7,9 +7,10 @@ import {
   query,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import Gyeweet from "../components/Gyeweet";
 import { dbService } from "../fbase";
 
-interface GyeweetData {
+export interface GyeweetData {
   id: string;
   creatorId: string;
   createdAt: number;
@@ -74,9 +75,11 @@ const Home = ({ userObj }: HomeProps) => {
       </form>
       <div>
         {gyeweets.map((gyeweet) => (
-          <div key={gyeweet.id}>
-            <h4>{gyeweet.text}</h4>
-          </div>
+          <Gyeweet
+            key={gyeweet.id}
+            gyeweetObj={gyeweet}
+            isOwner={userObj!.uid === gyeweet.creatorId}
+          />
         ))}
       </div>
     </div>
