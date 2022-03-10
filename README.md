@@ -82,6 +82,8 @@
 - 작성자 uid 추가
   - App.tsx > Router.tsx > Home.tsx로 user object props 전달
   - gyeweets collection에 creatorID field 추가
+  - Gyeweet component 만들고 isOwner props가 true 일 때만 수정이나 삭제 버튼 보이게 함
+  - `userObj!.uid === gyeweet.creatorId`
 - DB 실시간 반영
   - user 상태를 확인했던 onAuthStateChanged() 처럼 Firestore 상태를 리스닝하는 onSnapshot() 추가
   - query()에 orderBy()로 시간순으로 보이게 함
