@@ -63,3 +63,28 @@
   - Document : 문서
   - Collection : 폴더, Document의 모임
 - addDoc() 함수로 특정 collection에 document 추가할 수 있음
+- getDocs() 함수로 모든 doc 불러와서 id를 추가한 object state를 setGyeweets
+  - doc은 DocumentData type(gyeweet, createdAt), gyeweets 배열은 GyeweetData[] type
+  - doc.data()에 doc.id 추가
+  - setState에 함수를 넣으면 이전 값 사용 가능
+  ```
+  querySnapshot.forEach((doc) => {
+    const newDoc = {
+      data: doc.data(),
+      id: doc.id,
+    };
+    setGyeweets((prev) => {
+      return [newDoc, ...prev];
+    });
+  });
+  ```
+  - 값을 뿌릴 때는 gyeweets.map() 이용
+- 작성자 uid 추가
+  - App.tsx > Router.tsx > Home.tsx로 user object props 전달
+  - gyeweets collection에 creatorID field 추가
+- DB 실시간 반영
+  - user 상태를 확인했던 onAuthStateChanged() 처럼 Firestore 상태를 리스닝하는 onSnapshot() 추가
+  - query()에 orderBy()로 시간순으로 보이게 함
+  - useEffect cleanup
+    - unsubscribe = () => { ... }
+    - `return unsubscribe;`, `return () => unsubscribe();`
