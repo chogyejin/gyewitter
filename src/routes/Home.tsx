@@ -1,43 +1,55 @@
-import { addDoc, collection, DocumentData, getDocs } from "firebase/firestore";
+import { User } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { dbService } from "../fbase";
 
 interface GyeweetData {
-  data: DocumentData;
   id: string;
+  creatorId: string;
+  createdAt: number;
+  text: string;
 }
 
-const Home = () => {
+interface HomeProps {
+  userObj: User | null;
+}
+
+const Home = ({ userObj }: HomeProps) => {
   const [gyeweet, setGyeweet] = useState<string>("");
   const [gyeweets, setGyeweets] = useState<GyeweetData[]>([]);
 
-  const getGyeweets = async () => {
-    const querySnapshot = await getDocs(collection(dbService, "gyeweets"));
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.data());
-      const newDoc = {
-        data: doc.data(),
-        id: doc.id, // 기존 field에 id도 추가
-      };
-      setGyeweets((prev) => {
-        return [newDoc, ...prev];
-      });
-    });
-  };
-
   useEffect(() => {
-    getGyeweets();
+    const q = query(
+      collection(dbService, "gyeweets"),
+      orderBy("createdAt", "desc")
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const result = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        creatorId: doc.data().creatorId,
+        createdAt: doc.data().createdAt,
+        text: doc.data().text,
+      }));
+      setGyeweets(result);
+    });
+    return () => unsubscribe();
   }, []);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const docRef = await addDoc(collection(dbService, "gyeweets"), {
+    await addDoc(collection(dbService, "gyeweets"), {
       // collection name : gyeweets
       // field : gyeweet(state), createdAt
-      gyeweet,
+      text: gyeweet,
       createdAt: Date.now(),
+      creatorId: userObj!.uid,
     });
-    console.log("Document written with ID: ", docRef.id);
     setGyeweet(""); // submit 이후엔 비워주기
   };
 
@@ -47,7 +59,7 @@ const Home = () => {
     } = event;
     setGyeweet(value);
   };
-  console.log(gyeweets);
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -63,7 +75,7 @@ const Home = () => {
       <div>
         {gyeweets.map((gyeweet) => (
           <div key={gyeweet.id}>
-            <h4>{gyeweet.data.gyeweet}</h4>
+            <h4>{gyeweet.text}</h4>
           </div>
         ))}
       </div>
