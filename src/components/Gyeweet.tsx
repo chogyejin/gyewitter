@@ -1,4 +1,7 @@
 import { GyeweetData } from "../routes/Home";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { dbService } from "../fbase";
+import React, { useState } from "react";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -6,15 +9,68 @@ interface GyeweetProps {
 }
 
 const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [newGyeweet, setNewGyeweet] = useState<string>(gyeweetObj.text);
+
+  const onDeleteClick = async () => {
+    const isOk = window.confirm("삭제하시겠습니까?");
+    if (!isOk) return;
+    await deleteDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`));
+  };
+
+  const toggleIsEditing = () => {
+    setIsEditing((prev) => !prev);
+  };
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setNewGyeweet(value);
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await updateDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`), {
+      // field 이름은 일치시켜서
+      text: newGyeweet,
+      // createdAt: Date.now(), 수정된 거 날짜 수정하기
+    });
+    setIsEditing(false);
+  };
+
+  const onCancelClick = () => {
+    toggleIsEditing();
+    setNewGyeweet(gyeweetObj.text);
+  };
+
   return (
     <div>
-      <h4>{gyeweetObj.text}</h4>
-      {isOwner && (
+      {isEditing ? (
         <>
-          <div>
-            <button>수정</button>
-            <button>삭제</button>
-          </div>
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              placeholder="수정할 내용 입력"
+              value={newGyeweet}
+              onChange={onChange}
+              required
+            />
+            <input type="submit" value="수정 완료!" />
+          </form>
+          <button onClick={onCancelClick}>작성 취소</button>
+        </>
+      ) : (
+        <>
+          <h4>{gyeweetObj.text}</h4>
+          {isOwner && (
+            <>
+              <div>
+                <button onClick={onDeleteClick}>삭제</button>
+                <button onClick={toggleIsEditing}>수정</button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
