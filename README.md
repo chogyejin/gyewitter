@@ -96,3 +96,13 @@
 - 수정
   - updateDoc(ref, data)로 작성, data는 수정할 field 이름을 가지며 전달하는 object
   - 수정 중임을 뜻하는 isEditing state와 form을 보여주는 toggle 함수 추가
+
+## File Upload
+
+- Upload input
+  - `<input type="file" accept="image/*" />`
+  - onChange에서 FileReader API 이용
+    - 파일이 골라진 상태에서 선택을 하려다가 취소하면 Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob' 에러가 나오는데, 파일이 있을 때만 readAsDataURL()하게 함
+    - reader.onloadend는 이벤트 리스너
+  - reader.result 값을 imgUrl에 set
+  - 사진을 올리는 것을 삭제하고 싶다면 imgUrl과 input tag의 value를 빈 문자열로 대체
