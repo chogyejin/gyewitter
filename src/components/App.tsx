@@ -6,16 +6,14 @@ import { onAuthStateChanged, User } from "firebase/auth";
 
 function App() {
   const [init, setInit] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userObj, setUserObj] = useState<User | null>(null);
 
   useEffect(() => {
     onAuthStateChanged(authService, (user) => {
       if (user) {
-        setIsLoggedIn(true);
         setUserObj(user);
       } else {
-        setIsLoggedIn(false);
+        setUserObj(null);
       }
       setInit(true);
     });
@@ -23,7 +21,7 @@ function App() {
   return (
     <div>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} />
       ) : (
         "초기화 중..."
       )}
