@@ -6,7 +6,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Gyeweet from "../components/Gyeweet";
 import { dbService } from "../fbase";
 
@@ -24,6 +24,8 @@ interface HomeProps {
 const Home = ({ userObj }: HomeProps) => {
   const [gyeweet, setGyeweet] = useState<string>("");
   const [gyeweets, setGyeweets] = useState<GyeweetData[]>([]);
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const q = query(
@@ -61,6 +63,28 @@ const Home = ({ userObj }: HomeProps) => {
     setGyeweet(value);
   };
 
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = event;
+    const uploadedFile = files![0]; // non-null assertion operator
+    const reader = new FileReader(); // constructor
+
+    // event handler
+    reader.onloadend = () => {
+      setImgUrl(reader.result as string);
+    };
+
+    if (uploadedFile) {
+      reader.readAsDataURL(uploadedFile); // read file
+    }
+  };
+
+  const onFileClear = () => {
+    setImgUrl("");
+    inputRef.current!.value = "";
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -71,7 +95,21 @@ const Home = ({ userObj }: HomeProps) => {
           onChange={onChange}
           maxLength={120}
         />
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          onChange={onFileChange}
+        />
         <input type="submit" value="gyeweet" />
+        {imgUrl && (
+          <div>
+            <img src={imgUrl} width={100} height={100} />
+            <button type="button" onClick={onFileClear}>
+              사진 삭제
+            </button>
+          </div>
+        )}
       </form>
       <div>
         {gyeweets.map((gyeweet) => (
