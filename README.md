@@ -90,3 +90,9 @@
   - useEffect cleanup
     - unsubscribe = () => { ... }
     - `return unsubscribe;`, `return () => unsubscribe();`
+- 삭제
+  - 특정 collection의 특정 document를 지워야함.
+  - deleteDoc(ref), ref는 doc(Firestore, path)로 작성
+- 수정
+  - updateDoc(ref, data)로 작성, data는 수정할 field 이름을 가지며 전달하는 object
+  - 수정 중임을 뜻하는 isEditing state와 form을 보여주는 toggle 함수 추가
