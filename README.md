@@ -126,3 +126,4 @@
       }
     }
     ```
+  - getDownloadUrl()로 파일의 다운로드 url을 얻고, gyeweet object에 추가한다.

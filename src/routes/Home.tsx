@@ -8,13 +8,16 @@ import {
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import Gyeweet from "../components/Gyeweet";
-import { dbService } from "../fbase";
+import { dbService, storageService } from "../fbase";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 export interface GyeweetData {
   id: string;
   creatorId: string;
   createdAt: number;
   text: string;
+  imgDownloadUrl: string;
 }
 
 interface HomeProps {
@@ -38,6 +41,7 @@ const Home = ({ userObj }: HomeProps) => {
         creatorId: doc.data().creatorId,
         createdAt: doc.data().createdAt,
         text: doc.data().text,
+        imgDownloadUrl: doc.data().imgDownloadUrl,
       }));
       setGyeweets(result);
     });
@@ -46,14 +50,26 @@ const Home = ({ userObj }: HomeProps) => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await addDoc(collection(dbService, "gyeweets"), {
-      // collection name : gyeweets
-      // field : gyeweet(state), createdAt
+    let imgDownloadUrl = "";
+
+    // image exist
+    if (imgUrl !== "") {
+      const imgRef = ref(storageService, `${userObj!.uid}/${uuidv4()}`); // make ref
+      const response = await uploadString(imgRef, imgUrl, "data_url"); // upload image on storage
+      imgDownloadUrl = await getDownloadURL(imgRef); // get url after upload
+    }
+
+    const gyeweetInstance = {
+      // fields
       text: gyeweet,
       createdAt: Date.now(),
       creatorId: userObj!.uid,
-    });
+      imgDownloadUrl,
+    };
+    await addDoc(collection(dbService, "gyeweets"), gyeweetInstance); // add doc
+
     setGyeweet(""); // submit 이후엔 비워주기
+    onFileClear();
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

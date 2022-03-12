@@ -63,6 +63,9 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
       ) : (
         <>
           <h4>{gyeweetObj.text}</h4>
+          {gyeweetObj.imgDownloadUrl && (
+            <img src={gyeweetObj.imgDownloadUrl} width={50} height={50} />
+          )}
           {isOwner && (
             <>
               <div>
