@@ -100,9 +100,29 @@
 ## File Upload
 
 - Upload input
+
   - `<input type="file" accept="image/*" />`
   - onChange에서 FileReader API 이용
     - 파일이 골라진 상태에서 선택을 하려다가 취소하면 Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob' 에러가 나오는데, 파일이 있을 때만 readAsDataURL()하게 함
     - reader.onloadend는 이벤트 리스너
   - reader.result 값을 imgUrl에 set
   - 사진을 올리는 것을 삭제하고 싶다면 imgUrl과 input tag의 value를 빈 문자열로 대체
+
+- Upload with Firebase Storage
+  - fbase.js에서 storageService export
+  - Home.tsx에서 gyeweet을 보내기 전에 사진을 먼저 업로드하고, 그 사진의 url을 gyeweet에 추가
+    - ref 생성
+      - 사진 id를 정해줄 패키지 설치 `npm install @types/uuid`
+      - bucket 경로는 user-uid/image-uuid
+    - uploadString(ref, value, format?)으로 업로드
+  - 여기서 POST를 했을 때 "User does not have permission to access" 에러 발생 시
+    - Storage의 Security Rules(보안 규칙)를 수정해야한다.
+    ```
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /{document=**} {
+          allow read, write: if request.auth != null;
+        }
+      }
+    }
+    ```
