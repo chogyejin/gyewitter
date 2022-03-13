@@ -129,3 +129,11 @@
   - getDownloadUrl()로 파일의 다운로드 url을 얻고, gyeweet object에 추가한다.
   - gyeweet을 삭제할 때, document와 함께 업로드한 파일도 삭제해야 한다.
     - Gyeweet.tsx에서 삭제할 때 deleteObject(ref) 이용
+
+## Profile
+
+- 내 프로필 페이지에서 내 gyeweet들을 볼 수 있음
+  - Profile.tsx로 user object 전달
+  - query에서 index를 필요로 하기 때문에 Firestore console에서 만들어줌
+  - Firestore로부터 getDocs(query)로 documents를 불러옴
+  - query에서는 조건(where), 정렬(orderBy)을 정할 수 있다.
