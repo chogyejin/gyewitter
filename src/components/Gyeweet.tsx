@@ -1,7 +1,8 @@
 import { GyeweetData } from "../routes/Home";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import { dbService } from "../fbase";
+import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
+import { ref, deleteObject } from "firebase/storage";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -16,6 +17,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
     const isOk = window.confirm("삭제하시겠습니까?");
     if (!isOk) return;
     await deleteDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`));
+    await deleteObject(ref(storageService, gyeweetObj.imgDownloadUrl));
   };
 
   const toggleIsEditing = () => {

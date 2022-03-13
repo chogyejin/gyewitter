@@ -127,3 +127,5 @@
     }
     ```
   - getDownloadUrl()로 파일의 다운로드 url을 얻고, gyeweet object에 추가한다.
+  - gyeweet을 삭제할 때, document와 함께 업로드한 파일도 삭제해야 한다.
+    - Gyeweet.tsx에서 삭제할 때 deleteObject(ref) 이용
