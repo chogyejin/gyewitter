@@ -137,3 +137,11 @@
   - query에서 index를 필요로 하기 때문에 Firestore console에서 만들어줌
   - Firestore로부터 getDocs(query)로 documents를 불러옴
   - query에서는 조건(where), 정렬(orderBy)을 정할 수 있다.
+- Profile Link
+
+  - Router component에서 Navigation component로 user object 보냄
+  - 네비게이션의 프로필 Link 이름 displayName으로 변경
+
+- Profile 페이지 정보 업데이트
+  - 새로 입력한 displayName과 현재 displayName이 같지 않으면 updateProfile(user,{}) 실행
+  - Navigation의 userObj.displayName은 바로 업데이트 되지 않는 문제 발생
