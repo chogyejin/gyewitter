@@ -145,3 +145,8 @@
 - Profile 페이지 정보 업데이트
   - 새로 입력한 displayName과 현재 displayName이 같지 않으면 updateProfile(user,{}) 실행
   - Navigation의 userObj.displayName은 바로 업데이트 되지 않는 문제 발생
+- 업데이트 바로 반영(Navigation)
+  - App.tsx에서 refreshUser() 함수를 내려주어 Profile 페이지에서 이름 변경 시 isChanged state를 변경하여 리렌더링 시킨다.
+  - App > Router > Profile
+- 새 계정 생성, GitHub 로그인 시 displayName null 문제
+  - App.tsx에서 onAuthStateChanged() 안에 로그인한 user의 displayName이 null일 경우 기본값 "사용자"를 주고 refreshUser() 수행
