@@ -7,6 +7,7 @@ import { updateProfile } from "firebase/auth";
 
 interface ProfileProps {
   userObj: User | null;
+  refreshUser: () => void;
 }
 
 interface MyGyeweetData {
@@ -15,7 +16,7 @@ interface MyGyeweetData {
   imgDownloadUrl: string;
 }
 
-const Profile = ({ userObj }: ProfileProps) => {
+const Profile = ({ userObj, refreshUser }: ProfileProps) => {
   const [myGyeweets, setMyGyeweets] = useState<MyGyeweetData[]>([]);
   const displayNamePlaceholder = `바꿀 이름을 입력하세요. 현재 : ${
     userObj!.displayName
@@ -56,12 +57,13 @@ const Profile = ({ userObj }: ProfileProps) => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userObj?.displayName === newDisplayName) {
+    if (userObj!.displayName === newDisplayName) {
       return;
     }
     await updateProfile(userObj!, {
       displayName: newDisplayName,
     });
+    refreshUser();
   };
 
   return (

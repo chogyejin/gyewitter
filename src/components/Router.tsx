@@ -8,9 +8,10 @@ import Navigation from "./Navigation";
 interface AppRouterProps {
   isLoggedIn: boolean;
   userObj: User | null;
+  refreshUser: () => void;
 }
 
-const AppRouter = ({ isLoggedIn, userObj }: AppRouterProps) => {
+const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
   return (
     <Router>
       {isLoggedIn && <Navigation userObj={userObj} />}
@@ -18,7 +19,10 @@ const AppRouter = ({ isLoggedIn, userObj }: AppRouterProps) => {
         {isLoggedIn ? (
           <>
             <Route path="/" element={<Home userObj={userObj} />} />
-            <Route path="/profile" element={<Profile userObj={userObj} />} />
+            <Route
+              path="/profile"
+              element={<Profile userObj={userObj} refreshUser={refreshUser} />}
+            />
           </>
         ) : (
           <Route path="/" element={<Auth />} />
