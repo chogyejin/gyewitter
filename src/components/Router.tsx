@@ -13,7 +13,7 @@ interface AppRouterProps {
 const AppRouter = ({ isLoggedIn, userObj }: AppRouterProps) => {
   return (
     <Router>
-      {isLoggedIn && <Navigation />}
+      {isLoggedIn && <Navigation userObj={userObj} />}
       <Routes>
         {isLoggedIn ? (
           <>
