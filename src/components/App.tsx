@@ -13,7 +13,6 @@ function App() {
     onAuthStateChanged(authService, async (user) => {
       if (user) {
         setUserObj(user);
-        console.log(user.displayName);
         if (user.displayName === null) {
           await updateProfile(user, { displayName: "사용자" });
           refreshUser();

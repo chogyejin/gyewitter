@@ -17,6 +17,8 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
     const isOk = window.confirm("삭제하시겠습니까?");
     if (!isOk) return;
     await deleteDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`));
+
+    if (!gyeweetObj.imgDownloadUrl) return;
     await deleteObject(ref(storageService, gyeweetObj.imgDownloadUrl));
   };
 
