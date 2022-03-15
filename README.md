@@ -150,3 +150,11 @@
   - App > Router > Profile
 - 새 계정 생성, GitHub 로그인 시 displayName null 문제
   - App.tsx에서 onAuthStateChanged() 안에 로그인한 user의 displayName이 null일 경우 기본값 "사용자"를 주고 refreshUser() 수행
+
+## Refactoring
+
+- 하나의 component에서 한 가지 일을 수행하게끔 코드 리팩토링
+  - Home.tsx의 gyeweet form을 분리
+  - Auth.tsx의 sign in form 분리
+- [Airbnb Style Guild GitHub](https://github.com/airbnb/javascript/tree/master/react)
+- 파일이 없는 gyeweet을 삭제할 때 deleteObject()의 에러 : Storage에 url이 있을 때만 수행
