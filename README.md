@@ -158,3 +158,22 @@
   - Auth.tsx의 sign in form 분리
 - [Airbnb Style Guild GitHub](https://github.com/airbnb/javascript/tree/master/react)
 - 파일이 없는 gyeweet을 삭제할 때 deleteObject()의 에러 : Storage에 url이 있을 때만 수행
+
+## Deployment
+
+- GitHub pages를 통해 배포
+  - package.json "homepage" 추가
+  - package.json "scripts"에 "prebuild", "deploy" 추가
+  - `npm run deploy`
+- The current domain is not authorized for OAuth operations 에러
+
+  - 특정 도메인에서 Auth를 사용하도록 Firebase console에 추가
+  - Add domain to the OAuth redirect domains list
+
+## Security
+
+- 로그인 된 사람들만 gyeweet 할 수 있도록 Firestore 보안 규칙 수정
+  - `allow read, write: if request.auth != null;`
+- Google Cloud Platform
+  - credentials(사용자 인증 정보)에서 API Key 수정
+  - 애플리케이션 제한사항 > HTTP 리퍼러, 웹사이트 제한사항에 도메인 추가
