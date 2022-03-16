@@ -66,10 +66,16 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
         </>
       ) : (
         <>
-          <h4>{gyeweetObj.text}</h4>
-          {gyeweetObj.imgDownloadUrl && (
-            <img src={gyeweetObj.imgDownloadUrl} width={50} height={50} />
-          )}
+          <div>
+            <div>작성자 : {gyeweetObj.creatorName}</div>
+            <div>
+              {gyeweetObj.imgDownloadUrl && (
+                <img src={gyeweetObj.imgDownloadUrl} width={50} height={50} />
+              )}
+            </div>
+            <h4>{gyeweetObj.text}</h4>
+          </div>
+
           {isOwner && (
             <>
               <div>

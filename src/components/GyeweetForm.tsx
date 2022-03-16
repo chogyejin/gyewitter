@@ -31,6 +31,7 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
       createdAt: Date.now(),
       creatorId: userObj!.uid,
       imgDownloadUrl,
+      creatorName: userObj!.displayName,
     };
     await addDoc(collection(dbService, "gyeweets"), gyeweetInstance); // add doc
 

@@ -52,14 +52,20 @@ const Profile = ({ userObj, refreshUser }: ProfileProps) => {
     const {
       target: { value },
     } = event;
+
     setNewDisplayName(value);
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userObj!.displayName === newDisplayName) {
+
+    const blankPattern = /[\s]/g;
+    if (blankPattern.test(newDisplayName) === true) {
+      alert("공백을 쓰지마세용.");
       return;
     }
+
+    if (userObj!.displayName === newDisplayName) return;
     await updateProfile(userObj!, {
       displayName: newDisplayName,
     });
@@ -81,6 +87,7 @@ const Profile = ({ userObj, refreshUser }: ProfileProps) => {
         </form>
       </div>
       <div>
+        <h3>내 계윗 목록</h3>
         {myGyeweets.map((myGyeweet) => (
           <div key={myGyeweet.id}>{myGyeweet.text}</div>
         ))}

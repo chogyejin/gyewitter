@@ -11,6 +11,7 @@ export interface GyeweetData {
   createdAt: number;
   text: string;
   imgDownloadUrl: string;
+  creatorName: string;
 }
 
 interface HomeProps {
@@ -32,6 +33,7 @@ const Home = ({ userObj }: HomeProps) => {
         createdAt: doc.data().createdAt,
         text: doc.data().text,
         imgDownloadUrl: doc.data().imgDownloadUrl,
+        creatorName: doc.data().creatorName,
       }));
       setGyeweets(result);
     });
