@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { dbService, storageService } from "../fbase";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "firebase/auth";
+import Recaptcha from "./Recaptcha";
 
 interface GyeweetFormProps {
   userObj: User | null;
@@ -84,6 +85,7 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
         onChange={onFileChange}
       />
       <input type="submit" value="gyeweet" />
+      <Recaptcha />
       {imgUrl && (
         <div>
           <img src={imgUrl} width={100} height={100} />
