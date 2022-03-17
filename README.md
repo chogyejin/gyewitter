@@ -170,6 +170,10 @@
   - 특정 도메인에서 Auth를 사용하도록 Firebase console에 추가
   - Add domain to the OAuth redirect domains list
 
+- Environment
+  - `npm start` : Development mode
+  - `npm run build`, `npx serve -s build` : Production mode, package.json에서 "homepage" 지워져있어야함
+
 ## Security
 
 - 로그인 된 사람들만 gyeweet 할 수 있도록 Firestore 보안 규칙 수정
@@ -177,3 +181,10 @@
 - Google Cloud Platform
   - credentials(사용자 인증 정보)에서 API Key 수정
   - 애플리케이션 제한사항 > HTTP 리퍼러, 웹사이트 제한사항에 도메인 추가
+
+## ReCAPTCHA v2
+
+- `npm i react-google-recaptcha`, `npm i @types/react-google-recaptcha`
+- Site key와 Secret key 환경변수로 저장
+- axios 설치 : `npm i axios`
+- fetch로 response를 받아올 때 'no-cors' mode 이용
