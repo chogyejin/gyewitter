@@ -188,3 +188,10 @@
 - Site key와 Secret key 환경변수로 저장
 - axios 설치 : `npm i axios`
 - fetch로 response를 받아올 때 'no-cors' mode 이용
+
+## Date
+
+- Firestore document createdAt field에 Date.now()로 작성 시간을 전달
+- displayDate(createdAt)
+  - DB의 timestamp를 전달받아 피드에 적힐 날짜 문자열을 반환하는 함수
+  - Date 객체 메서드 이용(getFullYear(), getMonth(), getDate(), getHours(), getMinutes())
