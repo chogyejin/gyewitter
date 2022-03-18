@@ -13,6 +13,7 @@ interface GyeweetFormProps {
 const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
   const [gyeweet, setGyeweet] = useState<string>("");
   const [imgUrl, setImgUrl] = useState<string>("");
+  const [isVerified, setIsVerified] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,8 +85,8 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
         accept="image/*"
         onChange={onFileChange}
       />
-      <input type="submit" value="gyeweet" />
-      <Recaptcha />
+      <input type="submit" value="gyeweet" disabled={!isVerified} />
+      <Recaptcha setIsVerified={setIsVerified} />
       {imgUrl && (
         <div>
           <img src={imgUrl} width={100} height={100} />

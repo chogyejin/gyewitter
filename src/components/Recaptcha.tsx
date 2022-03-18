@@ -1,8 +1,14 @@
 import ReCAPTCHA from "react-google-recaptcha";
 
-const Recaptcha = () => {
+interface RecaptchaProps {
+  setIsVerified: (isVerified: boolean) => void;
+}
+
+const Recaptcha = ({ setIsVerified }: RecaptchaProps) => {
   const onCheckboxClick = (token: string | null) => {
+    if (!token) return;
     console.log(token);
+    setIsVerified(true);
   };
 
   return (
