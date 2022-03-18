@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/gyewitter/static/js/main.3180f451.js",
+    "main.js": "/gyewitter/static/js/main.3c5cfe01.js",
     "index.html": "/gyewitter/index.html",
-    "main.3180f451.js.map": "/gyewitter/static/js/main.3180f451.js.map"
+    "main.3c5cfe01.js.map": "/gyewitter/static/js/main.3c5cfe01.js.map"
   },
   "entrypoints": [
-    "static/js/main.3180f451.js"
+    "static/js/main.3c5cfe01.js"
   ]
 }
