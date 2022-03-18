@@ -3,6 +3,7 @@ import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
+import displayDate from "../utils/displayDate";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -12,6 +13,7 @@ interface GyeweetProps {
 const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newGyeweet, setNewGyeweet] = useState<string>(gyeweetObj.text);
+  const date = displayDate(gyeweetObj.createdAt);
 
   const onDeleteClick = async () => {
     const isOk = window.confirm("삭제하시겠습니까?");
@@ -74,6 +76,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
               )}
             </div>
             <h4>{gyeweetObj.text}</h4>
+            <div>{date}</div>
           </div>
 
           {isOwner && (
