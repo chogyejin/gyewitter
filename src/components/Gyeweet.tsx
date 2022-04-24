@@ -4,6 +4,7 @@ import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
 import displayDate from "../utils/displayDate";
+import { GyeweetContainer } from "./styled/Container/Container";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -68,16 +69,17 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
         </>
       ) : (
         <>
-          <div>
-            <div>작성자 : {gyeweetObj.creatorName}</div>
+          <GyeweetContainer>
             <div>
               {gyeweetObj.imgDownloadUrl && (
                 <img src={gyeweetObj.imgDownloadUrl} width={50} height={50} />
               )}
             </div>
             <h4>{gyeweetObj.text}</h4>
+            <div>작성자 : {gyeweetObj.creatorName}</div>
+
             <div>{date}</div>
-          </div>
+          </GyeweetContainer>
 
           {isOwner && (
             <>
