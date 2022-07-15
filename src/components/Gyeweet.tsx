@@ -1,10 +1,9 @@
-import { GyeweetData } from "../routes/Home";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
 import displayDate from "../utils/displayDate";
-import { GyeweetContainer } from "./styled/Container/Container";
+import { GyeweetData } from "../interfaces";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -16,13 +15,15 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
   const [newGyeweet, setNewGyeweet] = useState<string>(gyeweetObj.text);
   const date = displayDate(gyeweetObj.createdAt);
 
-  const onDeleteClick = async () => {
-    const isOk = window.confirm("삭제하시겠습니까?");
-    if (!isOk) return;
-    await deleteDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`));
+  const onDeleteClick = () => {
+    void (async () => {
+      const isOk = confirm("삭제하시겠습니까?");
+      if (!isOk) return;
+      await deleteDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`));
 
-    if (!gyeweetObj.imgDownloadUrl) return;
-    await deleteObject(ref(storageService, gyeweetObj.imgDownloadUrl));
+      if (!gyeweetObj.imgDownloadUrl) return;
+      await deleteObject(ref(storageService, gyeweetObj.imgDownloadUrl));
+    })();
   };
 
   const toggleIsEditing = () => {
@@ -36,14 +37,17 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
     setNewGyeweet(value);
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await updateDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`), {
-      // field 이름은 일치시켜서
-      text: newGyeweet,
-      // createdAt: Date.now(), 수정된 거 날짜 수정하기
-    });
-    setIsEditing(false);
+
+    void (async () => {
+      await updateDoc(doc(dbService, "gyeweets", `${gyeweetObj.id}`), {
+        // field 이름은 일치시켜서
+        text: newGyeweet,
+        // createdAt: Date.now(), 수정된 거 날짜 수정하기
+      });
+      setIsEditing(false);
+    })();
   };
 
   const onCancelClick = () => {
@@ -69,7 +73,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
         </>
       ) : (
         <>
-          <GyeweetContainer>
+          <div>
             <div>
               {gyeweetObj.imgDownloadUrl && (
                 <img src={gyeweetObj.imgDownloadUrl} width={50} height={50} />
@@ -79,7 +83,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
             <div>작성자 : {gyeweetObj.creatorName}</div>
 
             <div>{date}</div>
-          </GyeweetContainer>
+          </div>
 
           {isOwner && (
             <>

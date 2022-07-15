@@ -24,24 +24,22 @@ const AuthForm = () => {
     }
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      let data;
-      if (isNewAccount) {
-        // If the new account was created, the user is signed in automatically
-        data = await createUserWithEmailAndPassword(
-          authService,
-          email,
-          password
-        );
-      } else {
-        // log in
-        data = await signInWithEmailAndPassword(authService, email, password);
+
+    void (async () => {
+      try {
+        if (isNewAccount) {
+          await createUserWithEmailAndPassword(authService, email, password);
+        } else {
+          await signInWithEmailAndPassword(authService, email, password);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       }
-    } catch (error: any) {
-      setError(error.message);
-    }
+    })();
   };
 
   const toggleAccount = () => {
@@ -79,4 +77,5 @@ const AuthForm = () => {
     </>
   );
 };
+
 export default AuthForm;

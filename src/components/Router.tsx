@@ -16,7 +16,7 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
     <Router>
       {isLoggedIn && <Navigation userObj={userObj} />}
       <Routes>
-        {isLoggedIn ? (
+        {isLoggedIn && userObj ? (
           <>
             <Route path="/" element={<Home userObj={userObj} />} />
             <Route

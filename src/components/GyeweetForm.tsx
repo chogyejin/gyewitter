@@ -7,7 +7,7 @@ import { User } from "firebase/auth";
 import Recaptcha from "./Recaptcha";
 
 interface GyeweetFormProps {
-  userObj: User | null;
+  userObj: User;
 }
 
 const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
@@ -16,29 +16,31 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let imgDownloadUrl = "";
 
-    // image exist
-    if (imgUrl !== "") {
-      const imgRef = ref(storageService, `${userObj!.uid}/${uuidv4()}`); // make ref
-      const response = await uploadString(imgRef, imgUrl, "data_url"); // upload image on storage
-      imgDownloadUrl = await getDownloadURL(imgRef); // get url after upload
-    }
+    void (async () => {
+      let imgDownloadUrl = "";
+      // image exist
+      if (imgUrl !== "") {
+        const imgRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // make ref
+        await uploadString(imgRef, imgUrl, "data_url"); // upload image on storage
+        imgDownloadUrl = await getDownloadURL(imgRef); // get url after upload
+      }
 
-    const gyeweetInstance = {
-      // fields
-      text: gyeweet,
-      createdAt: Date.now(),
-      creatorId: userObj!.uid,
-      imgDownloadUrl,
-      creatorName: userObj!.displayName,
-    };
-    await addDoc(collection(dbService, "gyeweets"), gyeweetInstance); // add doc
+      const gyeweetInstance = {
+        // fields
+        text: gyeweet,
+        createdAt: Date.now(),
+        creatorId: userObj.uid,
+        imgDownloadUrl,
+        creatorName: userObj.displayName,
+      };
+      await addDoc(collection(dbService, "gyeweets"), gyeweetInstance); // add doc
 
-    setGyeweet(""); // submit 이후엔 비워주기
-    onFileClear();
+      setGyeweet(""); // submit 이후엔 비워주기
+      onFileClear();
+    })();
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,22 +54,28 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
     const {
       target: { files },
     } = event;
-    const uploadedFile = files![0]; // non-null assertion operator
-    const reader = new FileReader(); // constructor
 
-    // event handler
-    reader.onloadend = () => {
-      setImgUrl(reader.result as string);
-    };
+    if (files) {
+      const uploadedFile = files[0]; // non-null assertion operator
+      const reader = new FileReader(); // constructor
 
-    if (uploadedFile) {
-      reader.readAsDataURL(uploadedFile); // read file
+      // event handler
+      reader.onloadend = () => {
+        setImgUrl(reader.result as string);
+      };
+
+      if (uploadedFile) {
+        reader.readAsDataURL(uploadedFile); // read file
+      }
     }
   };
 
   const onFileClear = () => {
     setImgUrl("");
-    inputRef.current!.value = "";
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   return (

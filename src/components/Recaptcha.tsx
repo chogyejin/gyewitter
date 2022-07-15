@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 interface RecaptchaProps {
@@ -15,7 +15,9 @@ const Recaptcha = ({ setIsVerified }: RecaptchaProps) => {
 
   const removeToken = () => {
     setTimeout(() => {
-      recaptchaRef.current!.reset();
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
       setIsVerified(false);
     }, 120 * 1000);
   };
@@ -25,7 +27,9 @@ const Recaptcha = ({ setIsVerified }: RecaptchaProps) => {
       <ReCAPTCHA
         ref={recaptchaRef}
         theme="dark"
-        sitekey={process.env.REACT_APP_SITE_KEY!}
+        sitekey={
+          process.env.REACT_APP_SITE_KEY ? process.env.REACT_APP_SITE_KEY : ""
+        }
         onChange={onCheckboxClick}
       />
     </>

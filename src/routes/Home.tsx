@@ -1,21 +1,13 @@
 import { User } from "firebase/auth";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Gyeweet from "../components/Gyeweet";
 import { dbService } from "../fbase";
 import GyeweetForm from "../components/GyeweetForm";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-
-export interface GyeweetData {
-  id: string;
-  creatorId: string;
-  createdAt: number;
-  text: string;
-  imgDownloadUrl: string;
-  creatorName: string;
-}
+import { GyeweetData } from "../interfaces";
 
 interface HomeProps {
-  userObj: User | null;
+  userObj: User;
 }
 
 const Home = ({ userObj }: HomeProps) => {
@@ -26,17 +18,25 @@ const Home = ({ userObj }: HomeProps) => {
       collection(dbService, "gyeweets"),
       orderBy("createdAt", "desc")
     );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const result = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        creatorId: doc.data().creatorId,
-        createdAt: doc.data().createdAt,
-        text: doc.data().text,
-        imgDownloadUrl: doc.data().imgDownloadUrl,
-        creatorName: doc.data().creatorName,
-      }));
-      setGyeweets(result);
-    });
+
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const result = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          creatorId: doc.data().creatorId as string,
+          createdAt: doc.data().createdAt as number,
+          text: doc.data().text as string,
+          imgDownloadUrl: doc.data().imgDownloadUrl as string,
+          creatorName: doc.data().creatorName as string,
+        }));
+
+        setGyeweets(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return () => unsubscribe();
   }, []);
 
@@ -48,7 +48,7 @@ const Home = ({ userObj }: HomeProps) => {
           <Gyeweet
             key={gyeweet.id}
             gyeweetObj={gyeweet}
-            isOwner={userObj!.uid === gyeweet.creatorId}
+            isOwner={userObj.uid === gyeweet.creatorId}
           />
         ))}
       </div>

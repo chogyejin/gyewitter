@@ -8,22 +8,26 @@ import { authService } from "../fbase";
 import AuthForm from "../components/AuthForm";
 
 const Auth = () => {
-  const onSocialClick = async (event: React.MouseEvent) => {
+  const onSocialClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     const name = (event.target as HTMLButtonElement).name;
 
-    let provider;
-    try {
-      if (name === "google") {
-        provider = new GoogleAuthProvider();
-      } else if (name === "github") {
-        provider = new GithubAuthProvider();
-      }
+    void (async () => {
+      let provider;
+      try {
+        if (name === "google") {
+          provider = new GoogleAuthProvider();
+        } else if (name === "github") {
+          provider = new GithubAuthProvider();
+        }
 
-      if (provider === undefined) return;
-      const result = await signInWithPopup(authService, provider);
-    } catch (error) {
-      console.log(error);
-    }
+        if (provider === undefined) return;
+        await signInWithPopup(authService, provider);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   };
 
   return (

@@ -6,7 +6,7 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
 interface ProfileProps {
-  userObj: User | null;
+  userObj: User;
   refreshUser: () => void;
 }
 
@@ -17,36 +17,36 @@ interface MyGyeweetData {
 }
 
 const Profile = ({ userObj, refreshUser }: ProfileProps) => {
+  const navigate = useNavigate();
   const [myGyeweets, setMyGyeweets] = useState<MyGyeweetData[]>([]);
   const displayNamePlaceholder = `바꿀 이름을 입력하세요. 현재 : ${
-    userObj!.displayName
+    userObj.displayName as string
   }`;
   const [newDisplayName, setNewDisplayName] = useState<string>("");
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    void getMyGyeweets();
+  }, []);
+
   const onLogOut = () => {
-    signOut(authService);
+    void signOut(authService);
     navigate("/");
   };
 
   const getMyGyeweets = async () => {
     const q = query(
       collection(dbService, "gyeweets"),
-      where("creatorId", "==", userObj!.uid),
+      where("creatorId", "==", userObj.uid),
       orderBy("createdAt", "desc")
     );
     const querySnapshot = await getDocs(q);
     const result = querySnapshot.docs.map((doc) => ({
       id: doc.id,
-      text: doc.data().text,
-      imgDownloadUrl: doc.data().imgDownloadUrl,
+      text: doc.data().text as string,
+      imgDownloadUrl: doc.data().imgDownloadUrl as string,
     }));
     setMyGyeweets(result);
   };
-
-  useEffect(() => {
-    getMyGyeweets();
-  }, []);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -56,20 +56,22 @@ const Profile = ({ userObj, refreshUser }: ProfileProps) => {
     setNewDisplayName(value);
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const blankPattern = /[\s]/g;
-    if (blankPattern.test(newDisplayName) === true) {
-      alert("공백을 쓰지마세용.");
-      return;
-    }
+    void (async () => {
+      const blankPattern = /[\s]/g;
+      if (blankPattern.test(newDisplayName) === true) {
+        alert("공백을 쓰지마세용.");
+        return;
+      }
 
-    if (userObj!.displayName === newDisplayName) return;
-    await updateProfile(userObj!, {
-      displayName: newDisplayName,
-    });
-    refreshUser();
+      if (userObj.displayName === newDisplayName) return;
+      await updateProfile(userObj, {
+        displayName: newDisplayName,
+      });
+      refreshUser();
+    })();
   };
 
   return (
