@@ -3,6 +3,8 @@ import AppRouter from "./Router";
 import { authService } from "../fbase";
 import { useEffect } from "react";
 import { onAuthStateChanged, User, updateProfile } from "firebase/auth";
+import { Global } from "@emotion/react";
+import reset from "../styles/reset";
 
 function App() {
   const [init, setInit] = useState<boolean>(false);
@@ -32,6 +34,7 @@ function App() {
 
   return (
     <>
+      <Global styles={reset} />
       {init ? (
         <AppRouter
           isLoggedIn={Boolean(userObj)}
