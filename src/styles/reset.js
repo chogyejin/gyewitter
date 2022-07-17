@@ -132,6 +132,12 @@ const reset = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  button {
+    cursor: pointer;
+  }
+  input {
+    box-sizing: border-box;
+  }
 `;
 
 export default reset;
