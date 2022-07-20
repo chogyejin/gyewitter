@@ -3,8 +3,7 @@ import AppRouter from "./Router";
 import { authService } from "../fbase";
 import { useEffect } from "react";
 import { onAuthStateChanged, User, updateProfile } from "firebase/auth";
-import { Global } from "@emotion/react";
-import reset from "../styles/reset";
+import styled from "@emotion/styled";
 
 function App() {
   const [init, setInit] = useState<boolean>(false);
@@ -33,8 +32,7 @@ function App() {
   };
 
   return (
-    <>
-      <Global styles={reset} />
+    <AppContainer>
       {init ? (
         <AppRouter
           isLoggedIn={Boolean(userObj)}
@@ -45,8 +43,16 @@ function App() {
         "초기화 중..."
       )}
       <footer>&copy; {new Date().getFullYear()} gyewitter</footer>
-    </>
+    </AppContainer>
   );
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh; // 높이가 있어야 justify-content 먹음
+  justify-content: center; // 세로축 가운데 정렬
+  align-items: center; // 가로축 가운데 정렬
+`;

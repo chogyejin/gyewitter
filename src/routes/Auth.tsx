@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   GoogleAuthProvider,
   GithubAuthProvider,
@@ -6,12 +6,18 @@ import {
 } from "firebase/auth";
 import { authService } from "../fbase";
 import AuthForm from "../components/AuthForm";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import styled from "@emotion/styled";
 
 const Auth = () => {
-  const onSocialClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const name = (event.target as HTMLButtonElement).name;
+  const googleButtonRef = useRef<HTMLButtonElement>(null);
+  const githubButtonRef = useRef<HTMLButtonElement>(null);
+
+  const onSocialClick = () => {
+    if (googleButtonRef.current === null || githubButtonRef.current === null)
+      return;
+    const { name } = googleButtonRef.current;
 
     void (async () => {
       let provider;
@@ -33,16 +39,39 @@ const Auth = () => {
   return (
     <div>
       <AuthForm />
-      <div>
-        <button name="google" onClick={onSocialClick}>
-          Google로 계속 하기
-        </button>
-        <button name="github" onClick={onSocialClick}>
-          GitHub로 계속 하기
-        </button>
-      </div>
+      <Container>
+        <SocialButton
+          ref={googleButtonRef}
+          name="google"
+          onClick={onSocialClick}
+        >
+          <FcGoogle size={50} />
+        </SocialButton>
+        <SocialButton
+          ref={githubButtonRef}
+          name="github"
+          onClick={onSocialClick}
+        >
+          <FaGithub size={50} />
+        </SocialButton>
+      </Container>
     </div>
   );
 };
 
 export default Auth;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+
+  & > svg {
+    cursor: pointer;
+  }
+`;
+
+const SocialButton = styled.button`
+  justify-content: center;
+  border: none;
+  background-color: white;
+`;

@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { authService } from "../fbase";
+import styled from "@emotion/styled";
 
 const AuthForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -48,7 +49,7 @@ const AuthForm = () => {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <input
           name="email"
           type="email"
@@ -65,17 +66,41 @@ const AuthForm = () => {
           value={password}
           onChange={onChange}
         />
-        <input
+        <AuthButton
           type="submit"
           value={isNewAccount ? "새 계정 만들기" : "로그인"}
         />
-      </form>
+      </Form>
       <div>{error}</div>
-      <div onClick={toggleAccount}>
+      <ChangeButton onClick={toggleAccount}>
         {isNewAccount ? "로그인 버튼으로" : "새 계정 만들기 버튼으로"}
-      </div>
+      </ChangeButton>
     </>
   );
 };
 
 export default AuthForm;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const AuthButton = styled.input`
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: #04aaff;
+  cursor: pointer;
+`;
+
+const ChangeButton = styled.button`
+  width: 100%;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: #04aaff;
+
+  &:hover {
+  }
+`;
