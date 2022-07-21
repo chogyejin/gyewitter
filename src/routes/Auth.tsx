@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   GoogleAuthProvider,
   GithubAuthProvider,
@@ -9,6 +9,7 @@ import AuthForm from "../components/AuthForm";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import styled from "@emotion/styled";
+import logo from "../images/gyewitterLogo.jpg";
 
 const Auth = () => {
   const googleButtonRef = useRef<HTMLButtonElement>(null);
@@ -37,7 +38,8 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <>
+      <Image src={logo} />
       <AuthForm />
       <Container>
         <SocialButton
@@ -55,11 +57,16 @@ const Auth = () => {
           <FaGithub size={50} />
         </SocialButton>
       </Container>
-    </div>
+    </>
   );
 };
 
 export default Auth;
+
+const Image = styled.img`
+  width: 100px;
+  height: 100px;
+`;
 
 const Container = styled.div`
   display: flex;

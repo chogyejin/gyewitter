@@ -42,7 +42,7 @@ function App() {
       ) : (
         "초기화 중..."
       )}
-      <footer>&copy; {new Date().getFullYear()} gyewitter</footer>
+      <Footer>&copy; {new Date().getFullYear()} gyewitter</Footer>
     </AppContainer>
   );
 }
@@ -55,4 +55,9 @@ const AppContainer = styled.div`
   height: 100vh; // 높이가 있어야 justify-content 먹음
   justify-content: center; // 세로축 가운데 정렬
   align-items: center; // 가로축 가운데 정렬
+`;
+
+const Footer = styled.footer`
+  position: absolute;
+  bottom: 0;
 `;
