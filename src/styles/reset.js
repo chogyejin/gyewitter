@@ -138,6 +138,13 @@ const reset = css`
   input {
     box-sizing: border-box;
   }
+  a {
+    text-decoration: none;
+
+    &:visited {
+      color: black;
+    }
+  }
 `;
 
 export default reset;

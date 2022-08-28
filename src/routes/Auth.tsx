@@ -69,8 +69,10 @@ const Image = styled.img`
 `;
 
 const Container = styled.div`
+  width: 100%;
+  max-width: 240px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 
   & > svg {
     cursor: pointer;

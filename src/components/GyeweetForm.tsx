@@ -5,6 +5,8 @@ import { dbService, storageService } from "../fbase";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "firebase/auth";
 import Recaptcha from "./Recaptcha";
+import styled from "@emotion/styled";
+import { Button } from "./base/Button";
 
 interface GyeweetFormProps {
   userObj: User;
@@ -18,6 +20,11 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (gyeweet.length === 0) {
+      alert("메시지를 입력해주세요");
+      return;
+    }
 
     void (async () => {
       let imgDownloadUrl = "";
@@ -79,8 +86,8 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
+    <Form onSubmit={onSubmit}>
+      <Input
         type="text"
         placeholder="새 계윗을 작성하세요"
         value={gyeweet}
@@ -93,8 +100,7 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
         accept="image/*"
         onChange={onFileChange}
       />
-      <input type="submit" value="gyeweet" disabled={!isVerified} />
-      <Recaptcha setIsVerified={setIsVerified} />
+      {/* <Recaptcha setIsVerified={setIsVerified} /> */}
       {imgUrl && (
         <div>
           <img src={imgUrl} width={100} height={100} />
@@ -103,7 +109,28 @@ const GyeweetForm = ({ userObj }: GyeweetFormProps) => {
           </button>
         </div>
       )}
-    </form>
+      <SubmitButton type="submit" value="gyeweet" />
+    </Form>
   );
 };
 export default GyeweetForm;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  top: 5rem;
+`;
+
+const Input = styled.input`
+  height: 100px;
+  padding: 5px;
+  border: 1px solid #04aaff;
+  border-radius: 10px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SubmitButton = styled(Button)``;

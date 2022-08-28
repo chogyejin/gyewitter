@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { authService } from "../fbase";
 import styled from "@emotion/styled";
+import { Button } from "./base/Button";
 
 const AuthForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -94,17 +95,13 @@ const Input = styled.input`
   border-radius: 10px;
   margin-bottom: 12px;
   padding-left: 5px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
-const AuthButton = styled.input`
-  height: 30px;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  background-color: #04aaff;
-  margin-bottom: 12px;
-  cursor: pointer;
-`;
+const AuthButton = styled(Button)``;
 
 const ChangeButton = styled.button`
   width: 100%;
