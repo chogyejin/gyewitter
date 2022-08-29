@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
 import displayDate from "../utils/displayDate";
 import { GyeweetData } from "../interfaces";
+import styled from "@emotion/styled";
+import { Button } from "./base/Button";
+import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
 interface GyeweetProps {
   gyeweetObj: GyeweetData;
@@ -56,7 +59,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
   };
 
   return (
-    <div>
+    <Container>
       {isEditing ? (
         <>
           <form onSubmit={onSubmit}>
@@ -67,7 +70,7 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
               onChange={onChange}
               required
             />
-            <input type="submit" value="수정 완료!" />
+            <Button type="submit" value="수정 완료!" />
           </form>
           <button onClick={onCancelClick}>작성 취소</button>
         </>
@@ -88,15 +91,25 @@ const Gyeweet = ({ gyeweetObj, isOwner }: GyeweetProps) => {
           {isOwner && (
             <>
               <div>
-                <button onClick={onDeleteClick}>삭제</button>
-                <button onClick={toggleIsEditing}>수정</button>
+                <DeleteButton onClick={onDeleteClick} />
+                <EditButton onClick={toggleIsEditing} />
               </div>
             </>
           )}
         </>
       )}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  border-bottom: 1px solid gray;
+`;
+
+const DeleteButton = styled(MdDeleteOutline)`
+  cursor: pointer;
+`;
+
+const EditButton = styled(MdOutlineModeEditOutline)``;
 
 export default Gyeweet;

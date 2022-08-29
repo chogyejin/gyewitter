@@ -119,7 +119,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  top: 5rem;
+  height: 500px;
 `;
 
 const Input = styled.input`
